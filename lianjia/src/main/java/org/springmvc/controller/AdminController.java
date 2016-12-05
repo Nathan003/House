@@ -215,6 +215,8 @@ public class AdminController {
 		}
 		System.out.println(user.getUserId() + user.getUserName()
 				+ user.getUserAddress() + user.getUserGender());
+		System.out.println(user.getUserId() + user.getUserName()
+				+ user.getUserAddress() + user.getUserGender());
 		// System.err.println(userService.update(user));
 		if (userService.update(user) == 1) {
 
