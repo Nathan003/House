@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 配置操作业务表的sql映射文件，根元素标签名为mapper  ,userName,userName=#{userName}-->
+<mapper namespace="org.mybatis.dao.EnshrineMapper">
+	
+	
+	<!-- insert语句映射 -->
+	<insert id="add" parameterType="Enshrine">
+		insert into enshrine (houseAddress,typeId,hostId,areaID,housePrice,houseArea,userName,date,info,imagesLink) 
+		values(#{houseAddress},#{typeId},#{hostId},#{areaID},#{housePrice},#{houseArea},#{userName},#{date},#{info},#{imagesLink})
+	</insert>
+	
+	<!-- delete 语句映射 -->
+	<delete id="delete" parameterType="Enshrine">
+		delete from enshrine where 1=1
+		<if test="enshrineId!=null">
+			and enshrineId=#{enshrineId}
+		</if>
+		
+	</delete>
+
+	<!-- select用户列表 -->
+	<select id="getHouseList" parameterType="String" resultType="Enshrine" resultMap="selectUserByHouse">
+		<!-- select h.*,u.userName,u.userPhone,t.typeName
+		from house h inner join user u on h.userId=u.userId
+		inner join type t on h.typeId=t.typeId
+		inner join area a on h.areaID=a.areaID -->
+		select e.*,u.*,t.*,a.*,c.*,p.*
+		from enshrine e inner join user u on e.hostId=u.userId
+					 inner join type t on e.typeId=t.typeId
+					 inner join area a on e.areaID=a.areaID
+					 inner join city c on c.`cityID`=a.`cityID`
+					 inner join province p on p.provinceId=c.provinceId
+					 where e.userName=#{userName}
+	</select>
+	<!-- house==user 多对一     house==type 多对一       house==区县   多对一   -->
+	<resultMap type="Enshrine" id="selectUserByHouse">
+		<result property="enshrineId" column="enshrineId"/>
+		<result property="info" column="info"/>
+		<result property="imagesLink" column="imagesLink"/>
+		<result property="houseAddress" column="houseAddress"/>
+		<result property="typeId" column="typeId"/>
+		<result property="hostId" column="hostId"/>
+		<result property="userName" column="userName"/>
+		<result property="areaID" column="areaID"/>
+		<result property="housePrice" column="housePrice"/>
+		<result property="houseArea" column="houseArea"/>
+		<result property="date" column="date"/>
+		<association property="user" javaType="User">
+			<result property="userId" column="userId"/>
+			<result property="userName" column="userName"/>
+			<result property="userPassword" column="userPassword"/>
+			<result property="userGender" column="userGender"/>
+			<result property="userAddress" column="userAddress"/>
+			<result property="userPhone" column="userPhone"/>
+		</association>
+		<association property="type" javaType="Type">
+			<result property="typeId" column="typeId"/>
+			<result property="typeName" column="typeName"/>
+		</association>
+		<!-- 区县==市  多对一 -->
+		<association property="area" javaType="Area">
+			<result property="id" column="id"/>
+			<result property="areaID" column="areaID"/>
+			<result property="area" column="area"/>
+			<result property="cityID" column="cityID"/>
+			<association property="city" javaType="City">
+				<result property="id" column="id"/>
+				<result property="cityID" column="cityID"/>
+				<result property="city" column="city"/>
+				<result property="provinceId" column="provinceId"/>
+				<association property="province" javaType="Province">
+					<result property="id" column="id"/>
+					<result property="province" column="province"/>
+					<result property="provinceId" column="provinceId"/>
+				</association>
+			</association>			
+		</association>			
+	</resultMap>
+	
+	
+	
+
+	
+	
+
+	
+	
+</mapper>

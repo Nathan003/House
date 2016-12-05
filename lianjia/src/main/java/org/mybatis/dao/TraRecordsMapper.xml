@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mybatis.dao.TraRecordsMapper" >
+  <resultMap id="BaseResultMap" type="TraRecords" >
+    <id column="recordId" property="recordId" />
+    <result column="userName" property="userName" />
+    <result column="houseAddress" property="houseAddress" />
+    <result column="housePrice" property="housePrice" />
+    <result column="houseArea" property="houseArea" />
+    <result column="hostName" property="hostName" />
+  </resultMap>
+  
+  
+ <select id="getTraRecordList" resultMap="BaseResultMap" parameterType="TraRecords">
+select * from traRecords 
+<where>
+	<if test="recordId!=null and recordId!=''">
+	and recordId=#{recordId}
+	</if>
+	<if test="houseAddress!=null and houseAddress!=''">
+	and houseAddress like #{houseAddress}
+	</if>
+</where>
+</select>
+
+<insert id="insertTraRecords" parameterType="TraRecords">
+insert into traRecords(houseAddress,userName,housePrice,houseArea,hostName)
+values(#{houseAddress},#{userName},#{housePrice},#{houseArea},#{hostName})
+</insert>
+
+<!-- <update id="updateTraRecords" parameterType="TraRecords">
+update traRecords set NAME=#{NAME},PASSWORD=#{PASSWORD} where ID=#{ID}
+
+</update> -->
+
+<delete id="deleteTraRecords" parameterType="TraRecords">
+delete from traRecords where
+<where>
+	<if test="recordId!=null and recordId!=''">
+	and recordId=#{recordId}
+	</if>
+	<if test="houseAddress!=null and houseAddress!=''">
+	and houseAddress like #{houseAddress}
+	</if>
+</where>
+<if test="recordId!=null">
+	and recordId=#{recordId}
+</if>
+</delete>
+  
+  
+  
+</mapper>
