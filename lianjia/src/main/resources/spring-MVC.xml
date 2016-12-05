@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.1.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd">
+
+	<!-- 配置springmvc提供的 异常解析器  2016-10-26 -->
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+			<!-- 属性中的key，是自定义异常类的包名和类名，属性值error为视图error.jsp的名称  2016-10-26-->
+				<!-- <prop key="org.springmvc.exception.UserException">error</prop> -->
+			</props>
+		</property>
+	</bean>
+
+	<!-- 启动springmvc控制器中的注解模式  2016-10-25-->
+	<!-- <mvc:annotation-driven></mvc:annotation-driven> -->
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value><!-- 避免IE出现下载JSON文件的情况 -->
+					</list>
+				</property>
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<!-- 处理responseBody 里面日期类型 -->
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss" />
+							</bean>
+						</property>
+						<!-- 为null字段时不显示 -->
+						<property name="serializationInclusion">
+							<value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</value>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- 注入springmvc提供的  文件上传解析器  2016-10-25-->
+	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+	id="multipartResolver">
+		<property name="maxUploadSize" value="1000000"></property>
+		<property name="defaultEncoding" value="utf-8"></property>
+	</bean>
+	
+	<!-- 配置spring管理的统一资源目录 2016-10- 25 -->
+	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	
+
+	<!-- spring 扫描控制器包名  2016-10- 24-->
+	<context:component-scan base-package="org.springmvc.controller"></context:component-scan>
+
+	<!-- 自定义bean 2016-10- 24-->
+	<!-- <bean name="/beanName" class="org.springmvc.controller.BeanNameController"></bean> -->
+
+	<!-- 配置springMVC 视图解析器(ViewResolver)  2016-10- 24-->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 视图文件的前半部分，服务器上jsp存放的目录 -->
+		<property name="prefix" value="/WEB-INF/jsp/"></property>
+		<!-- 视图文件额后半部分，就是jsp文件的扩展名 -->
+		<property name="suffix" value=".jsp"></property>
+	</bean>
+	
+	<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"></bean>
+</beans>

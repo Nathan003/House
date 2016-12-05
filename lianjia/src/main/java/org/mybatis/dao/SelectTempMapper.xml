@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 配置操作业务表的sql映射文件，根元素标签名为mapper 2016-10-27 -->
+<mapper namespace="org.mybatis.dao.SelectTempMapper">
+		
+	<resultMap type="SelectTemp" id="SelectTempMap">
+		<result property="id" column="id"/>
+		<result property="areaName" column="areaName"/>
+		<result property="minPrice" column="minPrice"/>
+		<result property="maxPrice" column="maxPrice"/>
+		<result property="minHouseArea" column="minHouseArea"/>
+		<result property="maxHouseArea" column="maxHouseArea"/>
+		<result property="typeName" column="typeName"/>
+	</resultMap>
+
+	<!-- 不要忘记”and“ -->
+	<select id="getSelectTemp" resultMap="SelectTempMap">
+		select * from selecttemp where 1=1
+		<if test="id!=null">
+			and id=#{id}
+		</if>
+	</select>	
+	<delete id="delete" parameterType="SelectTemp">
+		delete from selecttemp where 1=1
+		<if test="id!=null">
+			and id=#{id}
+		</if>
+	</delete>
+	<update id="update" parameterType="SelectTemp">
+		update selecttemp set areaName=#{areaName},minPrice=#{minPrice},maxPrice=#{maxPrice},minHouseArea=#{minHouseArea},maxHouseArea=#{maxHouseArea},typeName=#{typeName}
+		where 1=1
+		<if test="id!=null">
+			and id=#{id}
+		</if>
+	</update>
+	
+	<insert id="add" parameterType="SelectTemp">
+		insert into selecttemp(id,areaName,minPrice,maxPrice,minHouseArea,maxHouseArea,typeName)
+		value(#{id},#{areaName},#{minPrice},#{maxPrice},#{minHouseArea},#{maxHouseArea},#{typeName})
+	</insert>
+	
+	
+	
+
+	
+	
+
+	
+	
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.1.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+	<!-- tx:事务管理。 -->
+	<!-- 配置jdbc属性文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- 配置数据源连接池：连接数据库 2016.10.31 -->
+	<bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="url" value="${jdbc.url}"></property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="validationQuery" value="${validationQuery}"></property>
+	</bean>
+	
+	<!-- 配置mybatis会话工厂:类，用bean spring封装-->
+	<bean id="mySqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource"></property>
+		<!-- 加载mybatis上下文 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+		<!-- 加载Mapper映射文件哎 -->
+		<property name="mapperLocations" value="classpath:org/mybatis/dao/*.xml"></property>
+	</bean>
+	
+	<!-- 配置事务管理器  2016 10.31-->
+	<bean id="myTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="myDataSource"></property>
+	</bean>
+	
+	<!-- 开启事务扫描，当在服务器实现类里面需要事务提交 at transaction -->
+	<tx:annotation-driven/>
+	
+	<!-- 配置sql会话模块 -->
+	<bean id="mySqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="mySqlSessionFactory"></constructor-arg>
+	</bean>
+		
+	<!-- 注入sql会话模板到员工leiEmployeeDaoTest类 -->
+	<!-- <bean id="employeeDao" class="org.mybatis.utils.EmployeeDaoTest">
+		<property name="sqlSessionTemplate" ref="mySqlSessionTemplate"></property>
+	</bean> -->
+	
+	<!-- 配置独立的mapper扫描器 -->
+	<bean id="myMapperScanner" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.mybatis.dao"></property>
+		<property name="sqlSessionFactoryBeanName" value="mySqlSessionFactory"></property>
+		
+	</bean>
+	
+	<!-- 开启组件扫描使用注解的包名     -->
+	<context:component-scan base-package="org.mybatis.service"></context:component-scan>
+	
+	
+	
+	
+	
+	
+	
+</beans>

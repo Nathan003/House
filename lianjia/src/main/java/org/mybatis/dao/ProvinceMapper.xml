@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 配置操作业务表的sql映射文件，根元素标签名为mapper 2016-10-27 -->
+<mapper namespace="org.mybatis.dao.ProvinceMapper">
+		
+	<resultMap type="Province" id="ProvinceMap">
+		<result property="id" column="id"/>
+		<result property="province" column="province"/>
+		<result property="provinceId" column="provinceId"/>
+	</resultMap>
+
+	<!-- 不要忘记”and“ -->
+	<select id="getProvinceList" resultMap="ProvinceMap">
+		select * from province 
+		<!-- <if test="provinceId!=null">
+			and provinceId=#{provinceId}
+		</if>
+		<if test="province!=null">
+			and province=#{province}
+		</if> -->
+	</select>
+	
+	
+	
+	
+	
+
+	
+	
+
+	
+	
+</mapper>

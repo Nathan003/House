@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 配置操作业务表的sql映射文件，根元素标签名为mapper 2016-10-27 -->
+<mapper namespace="org.mybatis.dao.AreaMapper">
+		
+	<resultMap type="Area" id="AreaMap">
+		<result property="id" column="id"/>
+		<result property="areaID" column="areaID"/>
+		<result property="area" column="area"/>
+		<result property="cityID" column="cityID"/>
+	</resultMap>
+
+	<!-- 不要忘记”and“ -->
+	<select id="getAreaListLinkage" parameterType="City" resultMap="AreaMap">
+		select * from area where 1=1		
+		<if test="cityID!=null">
+			and cityID=#{cityID}
+		</if>
+	</select>
+	<select id="getAreaList" resultMap="AreaMap">
+		select * from area where 1=1		
+	</select>
+	
+	
+	
+	
+	
+
+	
+	
+
+	
+	
+</mapper>

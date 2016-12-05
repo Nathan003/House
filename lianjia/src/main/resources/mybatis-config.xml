@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+  
+  <!-- mybatis上下文配置，根节点名称为configuration 2016-10-27 -->
+  <configuration>
+		
+	<!-- 配置 业务Mapper映射文件 中的实体对象的别名 :
+		包名org.mybatis.entity下的所有实体都可以使用别名-->
+	<typeAliases>
+		<!-- <typeAlias type="org.mybatis.entity" alias="User"/> -->
+		<package name="org.mybatis.entity"></package>
+	</typeAliases>	
+
+  </configuration>

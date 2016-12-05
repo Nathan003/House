@@ -1,0 +1,29 @@
+.gallery{
+	height:496px;
+	overflow:hidden;
+	background:url(images/gallerry-bg.gif) 0 0 repeat-x #ccc;
+	border-bottom:5px solid #EAEAEA; 
+}
+.gallery li{background-color:#fff; overflow:hidden;}
+.roundabout-holder  { 
+	width:646px;
+	height:496px;
+	margin:0 auto;
+}
+.roundabout-moveable-item {
+	width: 646px;
+	height: 416px;
+	cursor: pointer;
+	border:3px solid #ccc;
+	border:3px solid rgba(255,255,255,0.5);
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+}
+.roundabout-moveable-item img{
+	width:100%;
+}
+.roundabout-in-focus {
+	cursor:default;
+	border:3px solid rgba(255,255,255,0.8);
+}

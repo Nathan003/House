@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 配置操作业务表的sql映射文件，根元素标签名为mapper 2016-10-27 -->
+<mapper namespace="org.mybatis.dao.TypeMapper">
+		
+	<resultMap type="Type" id="TypeMap">
+		<result property="typeId" column="typeId"/>
+		<result property="typeName" column="typeName"/>
+	</resultMap>
+
+	<!-- 不要忘记”and“ -->
+	<select id="getTypeList" parameterType="Type" resultMap="TypeMap">
+		select * from type where 1=1
+		<if test="typeId!=null">
+			and typeId=#{typeId}
+		</if>
+		<if test="typeName!=null">
+			and typeName=#{typeName}
+		</if>
+	</select>
+	
+	
+	
+	
+	
+
+	
+	
+
+	
+	
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.mybatis.dao.UserMapper" >
+  <resultMap id="UserMap" type="org.mybatis.entity.User" >
+    <result column="userId" property="userId" jdbcType="INTEGER" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="userPassword" property="userPassword" jdbcType="VARCHAR" />
+     <result column="userGender" property="userGender" jdbcType="VARCHAR" />
+      <result column="userAddress" property="userAddress" jdbcType="VARCHAR" />
+       <result column="userPhone" property="userPhone" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   userId, userName, userPassword, userGender,userAddress,userPhone
+  </sql>
+  
+  <select id="getUserList" resultMap="UserMap" resultType="org.mybatis.entity.User" >
+    select * from user
+  </select>
+  
+  	<!-- delete 语句映射 -->
+	<delete id="delete" parameterType="org.mybatis.entity.User">
+		delete from user where userId=#{userId}
+	</delete>
+	
+<!-- update语句映射 set 语句中等号左边的是数据表user字段名称，右边是实体类User对象的成员变量名称-->
+<update id="update" parameterType="User">
+update user set userName=#{userName},userPassword=#{userPassword},userEmail=#{userEmail},userGender=#{userGender}
+where 1=1
+<if test="userName!=null">
+and userName=#{userName}
+</if>
+<if test="userEmail!=null">
+and userEmail=#{userEmail}
+</if>
+</update>
+	
+	<insert id="insertUser" parameterType="org.mybatis.entity.User">
+		INSERT INTO USER(userName,userPassword,userGender,userAddress,userPhone,userEmail)
+VALUES(#{userName},#{userPassword},#{userGender},#{userAddress},#{userPhone},#{userEmail})
+	</insert>
+</mapper>
